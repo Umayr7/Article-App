@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    h1= article.title
+    h5 Writtent by #{article.author}
+    p= article.body
+    hr
+    a.button.btn.btn-secondary(type='button', href='/articles/edit/'+article._id) Edit
+    a.btn.btn-danger.delete-article(href='#', data-id=article._id, style='margin:5px;') Delete
