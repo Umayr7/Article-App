@@ -4,7 +4,7 @@
   "description": "Simple knowledgebase app",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "author": "M Umair Nadeem",
   "license": "ISC",
