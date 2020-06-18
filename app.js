@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
@@ -5,8 +6,12 @@ const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
 const flash = require('connect-flash')
 const session = require('express-session')
+const passport = require('passport')
+const config= require('./config/database')
 
-mongoose.connect('mongodb://localhost/nodekb')
+var PORT = process.env.PORT || 3000
+
+mongoose.connect(process.env.MONGODB_URI || config.database)
 let db = mongoose.connection
 
 //Check connection
@@ -60,6 +65,19 @@ app.use(function (req, res, next) {
 // Express Validator Middleware
 const { check, validationResult } = require('express-validator/check');
 
+//Passport Config
+require('./config/passport')(passport)
+
+//Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Getting user if logged in
+app.get('*', (req, res, next)=>{
+    res.locals.user = req.user || null
+    next()
+})
+
 //Home Route
 app.get('/', (req, res)=> {
     Article.find({}, (err, articles)=>{
@@ -85,7 +103,7 @@ app.use('/articles', articles)
 app.use('/users', users)
 
 //start server
-app.listen(8000, ()=>{
-    console.log('server started at port 8000');
+app.listen(PORT, ()=>{
+    console.log('server started at port 3000');
     
 })
